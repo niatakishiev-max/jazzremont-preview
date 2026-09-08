@@ -23,5 +23,17 @@
     function openWork(id){currentWork=works.find(work=>work.id===id);currentIndex=0;const thumbs=document.querySelector('#thumbs');thumbs.innerHTML=currentWork.media.map((media,index)=>`<button data-n="${index}">${media.type==='video'?'Видео':`<img src="${fix(media.url)}" alt="">`}</button>`).join('');thumbs.querySelectorAll('button').forEach(button=>button.onclick=()=>show(Number(button.dataset.n)));document.querySelector('#description').textContent=currentWork.description||currentWork.title;show(0);document.querySelector('#modal').classList.add('open')}
     document.querySelector('#previous').onclick=()=>currentWork&&show(currentIndex-1);document.querySelector('#next').onclick=()=>currentWork&&show(currentIndex+1);document.querySelector('.close').onclick=()=>document.querySelector('#modal').classList.remove('open');document.querySelector('#modal').onclick=event=>{if(event.target.id==='modal')event.currentTarget.classList.remove('open')};document.addEventListener('keydown',event=>{if(!currentWork||!document.querySelector('#modal').classList.contains('open'))return;if(event.key==='ArrowLeft')show(currentIndex-1);if(event.key==='ArrowRight')show(currentIndex+1)});fetch('portfolio.json').then(response=>response.json()).then(data=>{works=data;render()});
   </script>
+  <script>
+    let touchStartX = null;
+    viewer.addEventListener('touchstart', event => {
+      touchStartX = event.changedTouches[0].clientX;
+    }, {passive: true});
+    viewer.addEventListener('touchend', event => {
+      if (touchStartX === null || !currentWork || currentWork.media[currentIndex].type === 'video') return;
+      const distance = event.changedTouches[0].clientX - touchStartX;
+      touchStartX = null;
+      if (Math.abs(distance) > 45) show(distance < 0 ? currentIndex + 1 : currentIndex - 1);
+    }, {passive: true});
+  </script>
 </body>
 </html>
