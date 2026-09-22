@@ -24,6 +24,7 @@
     document.querySelector('#previous').onclick=()=>currentWork&&show(currentIndex-1);document.querySelector('#next').onclick=()=>currentWork&&show(currentIndex+1);document.querySelector('.close').onclick=()=>document.querySelector('#modal').classList.remove('open');document.querySelector('#modal').onclick=event=>{if(event.target.id==='modal')event.currentTarget.classList.remove('open')};document.addEventListener('keydown',event=>{if(!currentWork||!document.querySelector('#modal').classList.contains('open'))return;if(event.key==='ArrowLeft')show(currentIndex-1);if(event.key==='ArrowRight')show(currentIndex+1)});fetch('portfolio.json').then(response=>response.json()).then(data=>{works=data;render()});
   </script>
   <script>
+    document.querySelector('.master').src = 'media/0346/photo_01.jpg?v=20260922';
     let touchStartX = null;
     viewer.addEventListener('touchstart', event => {
       touchStartX = event.changedTouches[0].clientX;
